@@ -1,0 +1,19 @@
+name: CloneCal
+options:
+  bundleIdPrefix: com.custom
+  deploymentTarget:
+    iOS: "15.0"
+targets:
+  CloneCal:
+    type: application
+    platform: iOS
+    sources:
+      - Sources
+    settings:
+      base:
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        PRODUCT_BUNDLE_IDENTIFIER: com.custom.clonecal
+        GENERATE_INFOPLIST_FILE: YES

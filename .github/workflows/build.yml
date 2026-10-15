@@ -1,0 +1,40 @@
+name: Build IPA
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Generate Xcode Project
+        run: |
+          brew install xcodegen
+          xcodegen generate
+
+      - name: Compile Unsigned App
+        run: |
+          xcodebuild -project CloneCal.xcodeproj \
+            -scheme CloneCal \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Package into IPA
+        run: |
+          mkdir Payload
+          cp -r build/Build/Products/Release-iphoneos/CloneCal.app Payload/
+          zip -r CloneCal.ipa Payload
+
+      - name: Upload Finished IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: CloneCal-IPA
+          path: CloneCal.ipa
